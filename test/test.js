@@ -35,7 +35,8 @@ suite('FontFit', function() {
       var fontFit = new FontFit(el, this.config);
 
       el.textContent = createStringOfWidth(100, this.config.font);
-      fontFit.run();
+      fontFit.calc();
+      fontFit.set();
       assert.equal(el.style.fontSize, '24px');
     });
 
@@ -44,7 +45,8 @@ suite('FontFit', function() {
       var fontFit = new FontFit(el, this.config);
 
       el.textContent = createStringOfWidth(1000, this.config.font);
-      fontFit.run();
+      fontFit.calc();
+      fontFit.set();
       assert.equal(el.style.fontSize, '16px');
     });
 
@@ -53,7 +55,8 @@ suite('FontFit', function() {
       var fontFit = new FontFit(el, this.config);
 
       el.textContent = createStringOfWidth(10, this.config.font);
-      fontFit.run();
+      fontFit.calc();
+      fontFit.set();
       assert.equal(el.style.fontSize, '24px');
     });
 
@@ -63,7 +66,8 @@ suite('FontFit', function() {
 
       this.config.width = 80;
       el.textContent = createStringOfWidth(100, this.config.font);
-      fontFit.run();
+      fontFit.calc();
+      fontFit.set();
 
       var first = el.style.fontSize;
 
@@ -76,7 +80,8 @@ suite('FontFit', function() {
       this.config.paddingLeft = 10;
       this.config.paddingRight = 10;
       this.config.boxSizing = 'border-box';
-      fontFit.run();
+      fontFit.calc();
+      fontFit.set();
 
       var second = el.style.fontSize;
 
