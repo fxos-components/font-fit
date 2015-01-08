@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>font-fit demo</title>
+  <script src="font-fit.js"></script>
+  <style>
+
+    body {
+      font: italic 24px Arial;
+    }
+
+    #el1 {
+      width: 400px;
+      white-space: nowrap;
+      font-weight: normal;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1 id="el1">really long title really long title</h1>
+  <script>
+    (function() {
+      var FontFit = window['font-fit'];
+      var fontFit = new FontFit(el1, {
+        font: 'italic 24px arial',
+        width: 400
+      }).run();
+    })();
+  </script>
+</body>
+</html>
