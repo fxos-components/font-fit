@@ -1,4 +1,4 @@
-# &lt;font-fit&gt; [![](https://travis-ci.org/gaia-components/font-fit.svg)](https://travis-ci.org/gaia-components/font-fit)
+# font-fit [![](https://travis-ci.org/gaia-components/font-fit.svg)](https://travis-ci.org/gaia-components/font-fit)
 
 ## Installation
 
@@ -14,11 +14,13 @@ $ bower install gaia-components/font-fit
 
 ```js
 var fontFit = new FontFit(myElement, {
-  font: 'italic 24px arial',
+  font: 'italic 24px arial', // required
+  width: 400, // required
+  max: 24,
+  min: 16,
   paddingLeft: 10,
   paddingRight: 10,
-  boxSizing: 'border-box',
-  width: 400
+  boxSizing: 'border-box'
 });
 
 fontFit.calc();
