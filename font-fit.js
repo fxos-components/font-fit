@@ -24,6 +24,11 @@ function FontFit(el, config) {
   this.el = el;
 }
 
+FontFit.prototype.run = function() {
+  this.calc();
+  this.set();
+};
+
 FontFit.prototype.calc = function() {
   debug('update');
   var output = this.findBestFontSize();
