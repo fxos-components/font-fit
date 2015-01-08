@@ -22,14 +22,17 @@
 </head>
 
 <body>
-  <h1 id="el1">really long title really long title</h1>
+  <h1 id="el1">really long title really really really really long title</h1>
   <script>
     (function() {
       var FontFit = window['font-fit'];
       var fontFit = new FontFit(el1, {
         font: 'italic 24px arial',
         width: 400
-      }).run();
+      });
+
+      fontFit.calc();
+      fontFit.set();
     })();
   </script>
 </body>
