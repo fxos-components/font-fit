@@ -14,17 +14,14 @@ $ bower install gaia-components/font-fit
 
 ```js
 var fontFit = new FontFit(myElement, {
-  font: 'italic 24px arial', // required
-  width: 400, // required
-  max: 24,
-  min: 16,
-  paddingLeft: 10,
-  paddingRight: 10,
-  boxSizing: 'border-box'
+  font: 'italic 24px arial',
+  space: 300, // space for text,
+  min: 16, // min font-size (optional)
+  max: 24 // max font-size (optional)
 });
 
-fontFit.calc();
-fontFit.set();
+var fontSize = fontFit.get();
+myElement.style.fontSize = fontSize + 'px';
 ```
 
 ## Tests
