@@ -4,21 +4,37 @@
 suite('FontFit', function() {
   'use strict';
 
-  var FontFit = window['font-fit'];
+  var fontFit = window['font-fit'];
 
   setup(function() {
     this.sinon = sinon.sandbox.create();
     this.el = document.createElement('h1');
   });
 
+  teardown(function() {
+    this.sinon.restore();
+  });
+
   suite('Canvas Contexts', function() {
     test('It reuses canvas contexts when possible', function() {
-      var ctx1 = FontFit.prototype.getCanvasContext('italic 24px arial');
-      var ctx2 = new FontFit.prototype.getCanvasContext('italic 24px arial');
-      var ctx3 = new FontFit.prototype.getCanvasContext('italic 19px arial');
+      this.sinon.spy(document, 'createElement');
 
-      assert.equal(ctx1, ctx2);
-      assert.notEqual(ctx1, ctx3);
+      var config = {
+        text: 'hello world',
+        font: 'italic 24px arial',
+        space: 400
+      };
+
+      config.max = 24;
+      fontFit(config);
+
+      config.max = 40;
+      fontFit(config);
+
+      config.max = 40;
+      fontFit(config);
+
+      sinon.assert.calledTwice(document.createElement);
     });
   });
 
@@ -26,71 +42,46 @@ suite('FontFit', function() {
     setup(function() {
       this.config = {
         font: 'italic 24px arial',
-        width: 100
+        space: 100,
+        max: 24,
+        min: 16
       };
     });
 
-    test('It assigns a suitable', function() {
-      var el = document.createElement('h1');
-      var fontFit = new FontFit(el, this.config);
+    test('It returns a font-size that fits the space', function() {
+      this.config.text = createStringOfWidth(100, this.config.font);
+      var result = fontFit(this.config);
+      var font = this.config.font.replace(/\d+px/, result.fontSize + 'px');
+      var width = measureText(this.config.text, font);
+      assert.ok(width < this.config.space, 'should fit within the space');
 
-      el.textContent = createStringOfWidth(100, this.config.font);
-      fontFit.run();
-      assert.equal(el.style.fontSize, '24px');
+      this.config.text = createStringOfWidth(150, this.config.font);
+      result = fontFit(this.config);
+      font = this.config.font.replace(/\d+px/, result.fontSize + 'px');
+      width = measureText(this.config.text, font);
+      assert.ok(width < this.config.space, 'should fit within the space');
     });
 
     test('It doesn\'t go any lower than the min fontSize', function() {
-      var el = document.createElement('h1');
-      var fontFit = new FontFit(el, this.config);
-
-      el.textContent = createStringOfWidth(1000, this.config.font);
-      fontFit.run();
-      assert.equal(el.style.fontSize, '16px');
+      this.config.text = createStringOfWidth(1000, this.config.font);
+      var result = fontFit(this.config);
+      assert.equal(result.fontSize, 16);
     });
 
     test('It doesn\'t go any higher than the max fontSize', function() {
-      var el = document.createElement('h1');
-      var fontFit = new FontFit(el, this.config);
-
-      el.textContent = createStringOfWidth(10, this.config.font);
-      fontFit.run();
-      assert.equal(el.style.fontSize, '24px');
-    });
-
-    test('It takes into account padding', function() {
-      var el = document.createElement('h1');
-      var fontFit = new FontFit(el, this.config);
-
-      this.config.width = 80;
-      el.textContent = createStringOfWidth(100, this.config.font);
-      fontFit.run();
-
-      var first = el.style.fontSize;
-
-      // For the second run we increase the size,
-      // add equivalent padding either side and
-      // define the element as 'border-box' sizing.
-      // The efffective text content-space should be
-      // the same as the first test.
-      this.config.width = 100;
-      this.config.paddingLeft = 10;
-      this.config.paddingRight = 10;
-      this.config.boxSizing = 'border-box';
-      fontFit.run();
-
-      var second = el.style.fontSize;
-
-      assert.equal(first, second, 'both font-sizes match');
+      this.config.text = createStringOfWidth(10, this.config.font);
+      var result = fontFit(this.config);
+      assert.equal(result.fontSize, 24);
     });
   });
 
   function createStringOfWidth(width, font) {
     var string = '';
-    while (getTextWidth(string + '.', font) < width) { string += '.'; }
+    while (measureText(string + '.', font) < width) { string += '.'; }
     return string;
   }
 
-  function getTextWidth(text, font) {
+  function measureText(text, font) {
     var canvas = document.createElement('canvas');
     canvas.setAttribute('moz-opaque', 'true');
     canvas.setAttribute('width', '1');

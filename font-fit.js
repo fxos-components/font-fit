@@ -3,11 +3,7 @@
 /*jshint esnext:true*/
 /*jshint boss:true*/
 
-/**
- * Exports
- */
-
-module.exports = FontFit;
+'use strict';
 
 var debug = 0 ? console.log.bind(console) : function(){};
 var cache = {};
@@ -16,47 +12,19 @@ var defaults = {
   max: 24
 };
 
-function FontFit(el, config) {
-  debug('init', el, config);
-  this.font = config.font;
-  this.space = config.space;
-  this.min = config.min || defaults.min;
-  this.max = config.max || defaults.max;
-  this.el = el;
-}
-
-FontFit.prototype.get = function() {
-  return this.findBestFontSize();
-};
-
-FontFit.prototype.getCanvasContext = function(font) {
-  debug('get canvas context', font);
-
-  var cached = cache[font];
-  if (cached) { return cached; }
-
-  var canvas = document.createElement('canvas');
-  canvas.setAttribute('moz-opaque', 'true');
-  canvas.setAttribute('width', '200px');
-  canvas.setAttribute('height', '200x');
-  var ctx = canvas.getContext('2d', { willReadFrequently: true });
-  ctx.font = font;
-
-  return cache[font] = ctx;
-};
-
-FontFit.prototype.findBestFontSize = function() {
-  debug('find best font size');
-  var space = this.space - 1;
-  var text = this.el.textContent;
-  var fontSize = this.max;
+module.exports = function(config) {
+  debug('font fit', config);
+  var space = config.space - 1;
+  var min = config.min || defaults.min;
+  var max = config.max || defaults.max;
+  var fontSize = max;
   var textWidth;
   var font;
 
   do {
-    font = this.font.replace(/\d+px/, fontSize + 'px');
-    textWidth = this.getTextWidth(text, font);
-  } while (textWidth > space && fontSize-- > this.min);
+    font = config.font.replace(/\d+px/, fontSize + 'px');
+    textWidth = getTextWidth(config.text, font);
+  } while (textWidth > space && fontSize !== min && fontSize--);
 
   return {
     textWidth: textWidth,
@@ -64,12 +32,30 @@ FontFit.prototype.findBestFontSize = function() {
   };
 };
 
-FontFit.prototype.getTextWidth = function(text, font) {
-  var ctx = this.getCanvasContext(font);
+function getCanvasContext(font) {
+  debug('get canvas context', font);
+
+  var cached = cache[font];
+  if (cached) { return cached; }
+
+  var canvas = document.createElement('canvas');
+  canvas.setAttribute('moz-opaque', 'true');
+  canvas.setAttribute('width', '1px');
+  canvas.setAttribute('height', '1px');
+  debug('created canvas', canvas);
+
+  var ctx = canvas.getContext('2d', { willReadFrequently: true });
+  ctx.font = font;
+
+  return cache[font] = ctx;
+}
+
+function getTextWidth(text, font) {
+  var ctx = getCanvasContext(font);
   var width = ctx.measureText(text).width;
   debug('got text width', width);
   return width;
-};
+}
 
 });})(typeof define=='function'&&define.amd?define
 :(function(n,w){'use strict';return typeof module=='object'?function(c){
