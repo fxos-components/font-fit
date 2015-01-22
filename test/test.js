@@ -73,6 +73,23 @@ suite('FontFit', function() {
       var result = fontFit(this.config);
       assert.equal(result.fontSize, 24);
     });
+
+    test('It ignores whitespace (just like HTML does)', function() {
+      this.config.text = 'a a';
+      var expected = fontFit(this.config);
+
+      this.config.text = '      a a     ';
+      var result = fontFit(this.config);
+
+      assert.equal(result.fontSize, expected.fontSize);
+      assert.equal(result.textWidth, expected.textWidth);
+
+      this.config.text = 'a          a';
+      result = fontFit(this.config);
+
+      assert.equal(result.fontSize, expected.fontSize);
+      assert.equal(result.textWidth, expected.textWidth);
+    });
   });
 
   function createStringOfWidth(width, font) {

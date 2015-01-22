@@ -17,13 +17,14 @@ module.exports = function(config) {
   var space = config.space - 1;
   var min = config.min || defaults.min;
   var max = config.max || defaults.max;
+  var text = trim(config.text);
   var fontSize = max;
   var textWidth;
   var font;
 
   do {
     font = config.font.replace(/\d+px/, fontSize + 'px');
-    textWidth = getTextWidth(config.text, font);
+    textWidth = getTextWidth(text, font);
   } while (textWidth > space && fontSize !== min && fontSize--);
 
   return {
@@ -55,6 +56,10 @@ function getTextWidth(text, font) {
   var width = ctx.measureText(text).width;
   debug('got text width', width);
   return width;
+}
+
+function trim(text) {
+  return text.replace(/\s+/g, ' ').trim();
 }
 
 });})(typeof define=='function'&&define.amd?define
