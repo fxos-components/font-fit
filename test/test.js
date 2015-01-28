@@ -8,11 +8,13 @@ suite('FontFit', function() {
 
   setup(function() {
     this.sinon = sinon.sandbox.create();
-    this.el = document.createElement('h1');
+    this.dom = document.createElement('div');
+    document.body.appendChild(this.dom);
   });
 
   teardown(function() {
     this.sinon.restore();
+    this.dom.remove();
   });
 
   suite('Canvas Contexts', function() {
@@ -90,11 +92,16 @@ suite('FontFit', function() {
       assert.equal(result.fontSize, expected.fontSize);
       assert.equal(result.textWidth, expected.textWidth);
     });
+
+    test('It uses a 3px buffer', function() {
+      this.config.text = createStringOfWidth(100, this.config.font);
+      assert.ok(fontFit(this.config).textWidth <= 97, 'text width is at least 3px < overall space');
+    });
   });
 
   function createStringOfWidth(width, font) {
     var string = '';
-    while (measureText(string + '.', font) < width) { string += '.'; }
+    while (measureText(string + '.', font) <= width) { string += '.'; }
     return string;
   }
 
