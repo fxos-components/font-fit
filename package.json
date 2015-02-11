@@ -1,7 +1,7 @@
 {
   "name": "font-fit",
   "homepage": "https://github.com/gaia-components/font-fit",
-  "license": "ISC",
+  "version": "0.2.1",
   "main": "font-fit.js",
   "directories": {
     "example": "examples",
