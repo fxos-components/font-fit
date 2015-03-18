@@ -51,7 +51,7 @@ var BUFFER = 3;
  *   - {Number} `max` Max font-size (px) (optional)
  *
  * @param  {Object} config
- * @return {Object} {fontSize,textWidth}
+ * @return {Object} {fontSize,overflowing,textWidth}
  */
 module.exports = function(config) {
   debug('font fit', config);
@@ -70,7 +70,8 @@ module.exports = function(config) {
 
   return {
     textWidth: textWidth,
-    fontSize: fontSize
+    fontSize: fontSize,
+    overflowing: textWidth > space
   };
 };
 
