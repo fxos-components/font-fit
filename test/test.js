@@ -68,12 +68,14 @@ suite('FontFit', function() {
       this.config.text = createStringOfWidth(1000, this.config.font);
       var result = fontFit(this.config);
       assert.equal(result.fontSize, 16);
+      assert.isTrue(result.overflowing);
     });
 
     test('It doesn\'t go any higher than the max fontSize', function() {
       this.config.text = createStringOfWidth(10, this.config.font);
       var result = fontFit(this.config);
       assert.equal(result.fontSize, 24);
+      assert.isFalse(result.overflowing);
     });
 
     test('It ignores whitespace (just like HTML does)', function() {
@@ -95,7 +97,8 @@ suite('FontFit', function() {
 
     test('It uses a 3px buffer', function() {
       this.config.text = createStringOfWidth(100, this.config.font);
-      assert.ok(fontFit(this.config).textWidth <= 97, 'text width is at least 3px < overall space');
+      var result = fontFit(this.config);
+      assert.ok(result.textWidth <= 97, 'text width is at least 3px < overall space');
     });
   });
 
