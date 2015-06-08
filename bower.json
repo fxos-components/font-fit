@@ -11,6 +11,8 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "README.md",
+    "index.html",
+    "package.json"
   ]
 }
