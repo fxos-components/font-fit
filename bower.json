@@ -1,7 +1,6 @@
 {
   "name": "font-fit",
   "main": "font-fit.js",
-  "version": "0.3.1",
   "authors": [
     "Wilson Page <wilsonpage@me.com>"
   ],

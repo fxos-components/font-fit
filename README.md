@@ -1,15 +1,15 @@
-# font-fit [![](https://travis-ci.org/gaia-components/font-fit.svg)](https://travis-ci.org/gaia-components/font-fit)
+# font-fit [![](https://travis-ci.org/fxos-components/font-fit.svg)](https://travis-ci.org/fxos-components/font-fit)
 
 A fast, lightweight library for sizing text-content to fit.
 
 ## Demo
 
-- [Demo](http://gaia-components.github.io/font-fit/)
+- [Demo](http://fxos-components.github.io/font-fit/)
 
 ## Installation
 
 ```bash
-$ bower install gaia-components/font-fit
+$ npm install font-fit
 ```
 
 ## Usage
