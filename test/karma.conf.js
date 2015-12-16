@@ -1,8 +1,12 @@
+'use strict';
 
 module.exports = function(config) {
   config.set({
     basePath: '../',
-    browsers: ['firefox_latest'],
+    browsers: [
+      'Firefox',
+      'Chrome_test'
+    ],
     client: {
       captureConsole: true,
       mocha: { 'ui': 'tdd' }
@@ -14,19 +18,15 @@ module.exports = function(config) {
     ],
 
     customLaunchers: {
-      firefox_latest: {
-        base: 'FirefoxNightly',
-        prefs: { 'dom.webcomponents.enabled': true }
+      Chrome_test: {
+          base: 'Chrome',
+          flags: ['--no-sandbox']
       }
     },
 
     files: [
       'font-fit.js',
       'test/test.js'
-    ],
-
-    proxies: {
-      '/bower_components/': 'http://localhost:9876/base/bower_components/'
-    }
+    ]
   });
 };
