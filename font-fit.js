@@ -36,7 +36,7 @@ var MAX = 24;
  *
  * @type {Number}
  */
-var BUFFER = 3;
+var BUFFER = 0.03;
 
 /**
  * Get the font-size that closest fits
@@ -55,7 +55,7 @@ var BUFFER = 3;
  */
 module.exports = function(config) {
   debug('font fit', config);
-  var space = config.space - BUFFER;
+  var space = config.space - (config.space * BUFFER);
   var min = config.min || MIN;
   var max = config.max || MAX;
   var text = trim(config.text);
